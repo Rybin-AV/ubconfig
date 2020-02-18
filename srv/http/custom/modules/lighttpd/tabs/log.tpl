@@ -1,4 +1,4 @@
-Name: Лог
+Name = Лог
 
 <div class = "puz">
 	<H2>Log file httpd</h2>

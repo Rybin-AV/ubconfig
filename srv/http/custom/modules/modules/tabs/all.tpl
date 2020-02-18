@@ -1,4 +1,4 @@
-Name: Вкл\Выкл
+Name = Вкл\Выкл
 <div class = "puz">
 <h2>Список модулей</h2>
 <form action = "mod">

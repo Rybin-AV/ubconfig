@@ -1,5 +1,5 @@
-Name: ?user?_login
-Button_close: yes
+Name = ?user?_login
+Dinamic = yes
 
 <div class="puz">
 <h2>?user?</h2>

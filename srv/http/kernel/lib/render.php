@@ -1,6 +1,7 @@
 <?php
 
 	include 'lib.php';
+	include 'new_lib.php';
 	include 'api.php';
 	chdir('../..');
 
@@ -22,14 +23,15 @@
 
 	if ( $mode_render == "tabs" )
 	{
-		$tabs = tab_list($conf);
+		$CurrentModule = new Module($conf);
+		$Tabs = $CurrentModule->getListTab();
 
-		foreach ( $tabs as $key => $tab )
+		foreach ( $Tabs as $IdTab => $Tab )
 		{
 			$buff['conf'][] = $conf;
-			$buff['tab'][] = $key;
-			$buff['tab_name'][] = tab_info($conf, $key, ['Name'])['Name'];
-			$buff['but'][] = tab_info($conf, $key, ['Button_close'])['Button_close'];
+			$buff['tab'][] = $IdTab;
+			$buff['tab_name'][] = $Tab->getName();
+			$buff['but'][] = $Tab->isDinamic();
 		}
 
 		$tmp  = handler_base("tabs", $buff);

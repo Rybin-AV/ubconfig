@@ -11,10 +11,7 @@
 		$conf = $_REQUEST['conf'];
 		$mode = $_REQUEST['mode'];
 
-		$base = file_get_contents("./kernel/base.info");
-		$reg = '/([A-z]+)\s*=\s*(.+)/';
-
-		$info = parse_info($reg, $base, ['Module', 'Tab']);
+		$info = DataFromFile::ParseInfoFromFile("./kernel/base.info", ['Module', 'Tab'] );
 
 		if ( $mode == NULL )
 			$mode = $info['Tab'];
@@ -23,9 +20,8 @@
 			$conf = $info['Module'];
 		/************************************************************/
 		
+		$CurrentModule = new Module($conf);
 		$Modules = Modules::getListModules();
-
-		$in = array_search($info['Module'], array_keys($Modules));
 
 		foreach ( $Modules as $IdModule => $Module )
 		{
@@ -37,14 +33,14 @@
 			}
 		}
 
-		$tabs = tab_list($conf);
+		$Tabs = $CurrentModule->getListTab();
 
-		foreach ( $tabs as $key => $tab )
+		foreach ( $Tabs as $IdTab => $Tab )
 		{
 			$buff['conf'][] = $conf;
-			$buff['tab'][] = $key;
-			$buff['tab_name'][] = tab_info($conf, $key, ['Name'])['Name'];
-			$buff['but'][] = tab_info($conf, $key, ['Button_close'])['Button_close'];
+			$buff['tab'][] = $IdTab;
+			$buff['tab_name'][] = $Tab->getName();
+			$buff['but'][] = $Tab->isDinamic();
 		}
 
 		$html = handler_base("base", $buff);

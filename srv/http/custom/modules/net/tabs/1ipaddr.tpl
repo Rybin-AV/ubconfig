@@ -1,4 +1,4 @@
-Name: Статус
+Name = Статус
 
 <div class = "puz">
 <h2>Статус</h2>

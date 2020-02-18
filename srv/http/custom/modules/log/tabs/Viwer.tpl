@@ -1,4 +1,4 @@
-Name: Список
+Name = Список
 <div class = "puz">
 <h2>Лог файлы</h2>
 	<table id="list_service">

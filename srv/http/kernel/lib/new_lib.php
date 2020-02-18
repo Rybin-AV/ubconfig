@@ -5,6 +5,7 @@
 		protected string $Name;
 		protected string $TabDefault;
 		protected bool $StatusActive;
+		protected Tab $ListTab;
 
 		public function getName()
 		{
@@ -21,16 +22,22 @@
 			return $this->StatusActive;
 		}
 
+		public function getListTab()
+		{
+			return $this->ListTab;
+		}
 
 	}
 
 	class Module extends ModuleModel
 	{
 		private $Data;
+		private $IdModule;
 		
-		function __construct($IdModule)
+		function __construct($Id)
 		{
-			$this->Data = $this->Module_getData($IdModule);
+			$this->IdModule = $Id;
+			$this->Data = $this->Module_getData();
 
 			$this->Name = $this->Module_getName();
 			$this->TabDefault = $this->Module_getTabDefault();
@@ -55,9 +62,14 @@
 				return FALSE;
 		}
 
-		private function Module_getData($IdModule)
+		public function getListTab()
 		{
-			return DataSystem::getDataModule($IdModule);
+			return DataSystem::getListTabs($this->IdModule);
+		}
+
+		private function Module_getData()
+		{
+			return DataSystem::getDataModule($this->IdModule);
 		}
 
 	}
@@ -77,6 +89,70 @@
 
 	}
 
+	class TabModel
+	{
+		protected string $Name;
+		protected string $Code;
+		protected string $Dinamic;
+
+		public function getName()
+		{
+			return $this->Name;
+		}
+
+		public function getCode()
+		{
+			return $this->Code;
+		}
+
+		public function isDinamic()
+		{
+			return $this->Dinamic;
+		}
+	}
+
+	class Tab extends TabModel
+	{
+		private $Module;
+		private $Tab;
+		private $Data;
+
+		function __construct($IdModule, $IdTab)
+		{
+			$this->Module = $IdModule;
+			$this->Tab = $IdTab;
+			$this->Data = $this->Tab_getData();
+
+			$this->Name = $this->Tab_getName();
+			$this->Dinamic = $this->Tab_isDinamic();
+		}
+
+		private function Tab_getName()
+		{
+			return $this->Data['Name'];
+		}
+
+		public function getCOde()
+		{
+			$this->Code = DataSystem::getCodeTab($this->Module, $this->Tab);
+			return $this->Code;
+		}
+
+		private function Tab_isDinamic()
+		{
+			if ( $this->Data['Dinamic'] == 'yes')
+				return $this->Data['Dinamic'];
+			else
+				return "Not_found";
+		}
+
+		private function Tab_getData()
+		{
+			return DataSystem::getDataTab($this->Module,$this->Tab);
+		}
+
+	}
+
 	class DataSystem
 	{
 		public static function getDataModule($IdModule)
@@ -89,12 +165,41 @@
 			return $Result;
 		}
 
+		public static function getDataTab($IdModule, $IdTab)
+		{
+			$Path = "./custom/modules/$IdModule/tabs/$IdTab.tpl";
+			$ListKey = ['Name', 'Dinamic'];
+
+			$Result = DataFromFile::ParseInfoFromFile($Path, $ListKey);
+
+			return $Result;
+		}
+
+		public static function getCodeTab($IdModule, $IdTab)
+		{
+			$Path = "./custom/modules/$IdModule/tabs/$IdTab.tpl";
+
+			return DataFromFile::getCodeHTML($Path);
+		}
+
 		public static function getListModules()
 		{
 			$Path = "./custom/modules";
 			$Result = DataFromFile::getListCatalog($Path);
 
 			return $Result;
+		}
+
+		public static function getListTabs($IdModule)
+		{
+			$Path = "./custom/modules/$IdModule/tabs/*.tpl*";
+
+			$Files = DataFromFile::getListFile($Path);
+
+			foreach ($Files as $IdTab) 
+				$List[$IdTab] = new Tab($IdModule, $IdTab);
+			
+			return $List;
 		}
 		
 	}
@@ -130,6 +235,15 @@
 			return $result;
 		}
 
+		public static function getCodeHTML($Path)
+		{
+			$FileText = self::getFileText($Path);
+			$Pos = strpos($FileText, "<");
+			$Result = substr($FileText, $Pos);
+
+			return $Result;
+		}
+
 		public static function getFileText($Path)
 		{
 			if ( file_exists($Path) )
@@ -152,6 +266,22 @@
 			}
 
 			return array_values($catalogs);
+		}
+
+		public static function getListFile($Path)
+		{
+			$Buffer = glob($Path);
+
+			foreach ($Buffer as $Value) 
+			{
+				$File = explode("/", $Value);
+				$File = array_pop($File);
+				$File = strstr($File, ".", TRUE);
+
+				$Result[] = $File;
+			}
+
+			return $Result;
 		}
 	}
 

@@ -1,4 +1,4 @@
-Name: Конфиг
+Name = Конфиг
 
 <div class = "puz">
 <h2>Edit lighttpd config</h2>

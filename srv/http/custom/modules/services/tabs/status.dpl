@@ -1,5 +1,5 @@
-Name: ?service?
-Button_close: yes
+Name = ?service?
+Dinamic = yes
 
 <div class = "puz">
 	<H2>?service?</H2>

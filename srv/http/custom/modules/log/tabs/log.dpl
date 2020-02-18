@@ -1,5 +1,5 @@
-Name: Лог
-Button_close: yes
+Name = Лог
+Dinamic = yes
 <div class = "puz">
 	<H2>This Auto Generate Page</H2>
 	<p>Log File: ?log? </p>

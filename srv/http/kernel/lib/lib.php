@@ -145,7 +145,7 @@
 		else
 			return "Tab not found";
 
-		$reg = '/([A-z]+):\s*(.+)/';
+		$reg = '/([A-z]+)\s*=\s*(.+)/';
 		$result = parse_info($reg, $file, $keys);
 
 		return $result;
