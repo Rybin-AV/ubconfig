@@ -274,16 +274,25 @@ $('Form').on('submit',
 
 
 function render(data, div_draw)
-{		
+{
+	$(div_draw).html("");
+	$('a').css('pointer-events', 'none');
+	$('.fer').css('display', 'block');
+
 	$.post("/kernel/lib/render.php", data, 
 
-			function(date)
+			function()
 			{
-				delete_handlers();
-				$(div_draw).html(date);
 				active_tab();
-				add_hadlers();
 
+			}
+		)
+		.done(function(date)
+			{
+				$(div_draw).html(date);
+				$('.fer').css('display', 'none');
+				update_hadlers();
+				$('a').css('pointer-events', 'all');
 			}
 		);
 }
@@ -307,7 +316,7 @@ function render_tabs()
 
 function transition(element)
 {
-	event.preventDefault()
+	event.preventDefault();
 	link = element.attr('href');
 	history.pushState(null, null, link);
 
@@ -317,8 +326,6 @@ function transition(element)
 		render_tabs();
 	
 	render_work();
-	
-	active_tab();
 }
 
 
@@ -346,6 +353,12 @@ let list_function = [action,
 					 transition];
 
 active_tab();
+
+function update_hadlers()
+{
+	delete_handlers();
+	add_hadlers();
+}
 
 function add_hadlers()
 {
@@ -382,5 +395,4 @@ function delete_handlers()
 		);
 }
 
-check_error();
-add_hadlers();
+render_work();

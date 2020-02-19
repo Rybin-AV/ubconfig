@@ -1,2 +1,0 @@
-chown http:http /srv/http
-chmod -R 775 /srv/http

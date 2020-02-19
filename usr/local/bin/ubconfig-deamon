@@ -10,7 +10,6 @@ exec_sh()
 
 	file=$1
 	shift
-	echo $file >> /ubconfig/log 
 	name=$(echo $file | awk -F "/" '{print $NF}' )
 
 	owner=$(ls -l $file | cut -d' ' -f3)
@@ -58,10 +57,13 @@ if [ "$1" == "start" ]; then
 		(
 			str=$(cat ubconfig/turn_run | head -n 1 )
 
-			if [ "$str" != "" ]; then
+			while [ "$str" != "" ]
+			do
+				echo $str>>/ubconfig/log 
 				sed -i '1d' ubconfig/turn_run 
 				exec_sh $str
-			fi
+				str=$(cat ubconfig/turn_run | head -n 1 )
+			done
 		)
 
 	done

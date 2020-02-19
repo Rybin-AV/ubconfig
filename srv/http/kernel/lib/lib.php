@@ -388,9 +388,27 @@
     *
     * @return Код шаблона готовый к отрисовки
     */
-	function handler_base($tpl, $values)
+	function handler_base_old($tpl, $values)
 	{
 		$tpl = kernel_tmp($tpl);
+		$tpl = handler_join($tpl);
+		
+		$chaches = handler_analysis($tpl);
+		$tpl = handler_replace($tpl, $chaches, $values);
+
+		return $tpl;
+	}
+
+	/**
+   	* Базовая обработка шаблона
+    *  
+    * @param $tpl код шаблона
+    * @param $values Набор значеней для подстановки
+    *
+    * @return Код шаблона готовый к отрисовки
+    */
+	function handler_base($tpl, $values)
+	{
 		$tpl = handler_join($tpl);
 		
 		$chaches = handler_analysis($tpl);
@@ -538,7 +556,6 @@
     */
 	function sh_execution_new($module, $nesting)
 	{
-
 		$path = $_SERVER['DOCUMENT_ROOT'];
 		$file = "/ubconfig/turn_run";
 		$timeout = 10;

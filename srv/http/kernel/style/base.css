@@ -552,6 +552,52 @@ fieldset
     color: #203D61;
 }
 
+.fer 
+{
+    width: 200px;
+    height: 110px;
+    background: #011935;
+    position: relative;
+    bottom: 60%;
+    left: 35%;
+    display: none;
+}
+
+.fer:before 
+{
+    content: "";
+    position: absolute;
+    top: -50px; 
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 50px solid #011935;
+}
+
+.fer:after 
+{
+    content: "";
+    position: absolute;
+    bottom: -50px; 
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-top: 50px solid #011935;
+}
+
+.fer span
+{
+    font-size: 95px;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+    margin: 0;
+}
+
 @media (max-width: 1025px)
 {
 

@@ -92,7 +92,7 @@
 	class TabModel
 	{
 		protected string $Name;
-		protected string $Code;
+		protected string $Template;
 		protected string $Dinamic;
 
 		public function getName()
@@ -102,7 +102,7 @@
 
 		public function getCode()
 		{
-			return $this->Code;
+			return $this->Template;
 		}
 
 		public function isDinamic()
@@ -132,10 +132,10 @@
 			return $this->Data['Name'];
 		}
 
-		public function getCOde()
+		public function getTemplate()
 		{
-			$this->Code = DataSystem::getCodeTab($this->Module, $this->Tab);
-			return $this->Code;
+			$this->Template = DataSystem::getTemplateTab($this->Module, $this->Tab);
+			return $this->Template;
 		}
 
 		private function Tab_isDinamic()
@@ -157,7 +157,7 @@
 	{
 		public static function getDataModule($IdModule)
 		{
-			$Path = "./custom/modules/$IdModule/base.info";
+			$Path = self::getPath($IdModule) . "/base.info";
 			$ListKey = ['Name', 'Tab', 'Status'];
 
 			$Result = DataFromFile::ParseInfoFromFile($Path, $ListKey);
@@ -167,7 +167,7 @@
 
 		public static function getDataTab($IdModule, $IdTab)
 		{
-			$Path = "./custom/modules/$IdModule/tabs/$IdTab.tpl";
+			$Path = self::getPath($IdModule) . "/tabs/$IdTab.tpl";
 			$ListKey = ['Name', 'Dinamic'];
 
 			$Result = DataFromFile::ParseInfoFromFile($Path, $ListKey);
@@ -175,9 +175,9 @@
 			return $Result;
 		}
 
-		public static function getCodeTab($IdModule, $IdTab)
+		public static function getTemplateTab($IdModule, $IdTab)
 		{
-			$Path = "./custom/modules/$IdModule/tabs/$IdTab.tpl";
+			$Path = self::getPath($IdModule) . "/tabs/$IdTab.tpl";
 
 			return DataFromFile::getCodeHTML($Path);
 		}
@@ -192,7 +192,7 @@
 
 		public static function getListTabs($IdModule)
 		{
-			$Path = "./custom/modules/$IdModule/tabs/*.tpl*";
+			$Path = self::getPath($IdModule) . "/tabs/*.tpl*";
 
 			$Files = DataFromFile::getListFile($Path);
 
@@ -200,6 +200,14 @@
 				$List[$IdTab] = new Tab($IdModule, $IdTab);
 			
 			return $List;
+		}
+
+		private function getPath($IdModule)
+		{
+			if ($IdModule == 'main' )
+				return "./kernel/main";
+			else
+				return "./custom/modules/$IdModule";
 		}
 		
 	}

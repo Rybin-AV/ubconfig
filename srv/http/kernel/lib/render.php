@@ -34,7 +34,7 @@
 			$buff['but'][] = $Tab->isDinamic();
 		}
 
-		$tmp  = handler_base("tabs", $buff);
+		$tmp  = handler_base_old("tabs", $buff);
 
 		echo $tmp;
 	}

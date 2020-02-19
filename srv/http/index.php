@@ -1,62 +1,58 @@
 <?php 
 
-	include './kernel/lib/lib.php';
 	include './kernel/lib/new_lib.php';
-	include './kernel/lib/api.php';
+	include './kernel/lib/lib.php';
 
 	if ( file_exists("./kernel/aut") )
 	{
-		/* Обработка параметров */
-		/************************************************************/
-		$conf = $_REQUEST['conf'];
-		$mode = $_REQUEST['mode'];
+		$Main = new Module('main');
+		$Page = new Tab('main', 'base');
 
-		$info = DataFromFile::ParseInfoFromFile("./kernel/base.info", ['Module', 'Tab'] );
+		$P_IdModule = $_REQUEST['module'];
+		$P_IdTab = $_REQUEST['tab'];
 
-		if ( $mode == NULL )
-			$mode = $info['Tab'];
+		if ($P_IdModule == NULL)
+			$P_IdModule = $Main->getTabDefault();
 
-		if ( $conf == NULL )
-			$conf = $info['Module'];
-		/************************************************************/
-		
-		$CurrentModule = new Module($conf);
+		$CurrentModule = new Module($P_IdModule);
+
+		if ($P_IdTab == NULL)
+			$P_IdTab = $CurrentModule->getTabDefault();
+
 		$Modules = Modules::getListModules();
 
-		foreach ( $Modules as $IdModule => $Module )
-		{
-			if ( $Module->isStatusActive() )
+			foreach ( $Modules as $IdModule => $Module )
 			{
-				$buff['Tab'][] = $Module->getTabDefault();
-				$buff['Name'][] = $Module->getName();
-				$buff['module'][] = $IdModule;
+				if ( $Module->isStatusActive() )
+				{
+					$buff['Tab'][] = $Module->getTabDefault();
+					$buff['Name'][] = $Module->getName();
+					$buff['module'][] = $IdModule;
+				}
 			}
-		}
+
 
 		$Tabs = $CurrentModule->getListTab();
 
-		foreach ( $Tabs as $IdTab => $Tab )
-		{
-			$buff['conf'][] = $conf;
-			$buff['tab'][] = $IdTab;
-			$buff['tab_name'][] = $Tab->getName();
-			$buff['but'][] = $Tab->isDinamic();
-		}
+			foreach ( $Tabs as $IdTab => $Tab )
+			{
+				$buff['conf'][] = $P_IdModule;
+				$buff['tab'][] = $IdTab;
+				$buff['tab_name'][] = $Tab->getName();
+				$buff['but'][] = $Tab->isDinamic();
+			}
 
-		$html = handler_base("base", $buff);
 
-		$html = sh_handler("kernel", $html);
-		$tmp = tab_code($conf, $mode);
-		$html = str_replace( "@work@", $tmp,  $html);
+		$tpl = $Page->getTemplate();
+		$tpl = handler_base($tpl, $buff);
+		$tpl = sh_handler("kernel", $tpl);
+		$tmp = new Tab($P_IdModule, $P_IdTab);
 
-		$html = sh_handler($conf, $html);
-		$html = form_generation($html);
-
-		echo $html;
+		print_r($tpl);
 	}
 	else
 	{
-		$html = kernel_tmp("aut");
-		echo $html;
+		$tpl = new Tab('main', 'aut');
+		echo $tpl->getTemplate();
 	}
 ?>
