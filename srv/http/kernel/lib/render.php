@@ -2,7 +2,6 @@
 
 	include 'lib.php';
 	include 'new_lib.php';
-	include 'api.php';
 	chdir('../..');
 
 	$mode_render = $_REQUEST['mode_render'];
@@ -14,9 +13,7 @@
 		$mode = $_REQUEST['mode'];
 
 		$tmp = tab_code($conf, $mode);
-
 		$tmp = sh_handler($conf, $tmp);
-		$tmp = form_generation($tmp);
 
 		echo $tmp;
 	}

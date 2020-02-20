@@ -31,12 +31,21 @@
 			</div>
 		</header>
 		<div class = "base_area">
-			?modules?
+			<NAV>
+				<UL class = "modules">
+					<a href = '/$module/$Tab'><li><div class="border"><img src="/custom/pic/$module.png" align="left"><p>$Name</p></div></li></a>
+				</UL>
+			</NAV>
+
 			<DIV class = "work">
 				<div class = "tabs_r">
-				?tabs?
+					<div class = "tabs">
+						<a href = '/$conf/$tab'><h3 class = "$tab">$tab_name<img class="close $but" src="/kernel/pic/close.png"></h3></a>
+					</div>
 			    </div>
-				?work?
+				<div class = "work_zone">
+  					@work@
+				</div>
 				<div class = "fer"><span>ub</span></div>
 			</DIV>
 		</div>

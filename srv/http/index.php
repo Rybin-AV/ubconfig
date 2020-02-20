@@ -44,9 +44,8 @@
 
 
 		$tpl = $Page->getTemplate();
-		$tpl = handler_base($tpl, $buff);
+		$tpl = TemplateHandler::Processing($tpl, $buff);
 		$tpl = sh_handler("kernel", $tpl);
-		$tmp = new Tab($P_IdModule, $P_IdTab);
 
 		print_r($tpl);
 	}

@@ -408,9 +408,7 @@
     * @return Код шаблона готовый к отрисовки
     */
 	function handler_base($tpl, $values)
-	{
-		$tpl = handler_join($tpl);
-		
+	{	
 		$chaches = handler_analysis($tpl);
 		$tpl = handler_replace($tpl, $chaches, $values);
 

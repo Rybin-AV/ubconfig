@@ -282,16 +282,17 @@ function render(data, div_draw)
 	$.post("/kernel/lib/render.php", data, 
 
 			function()
-			{
-				active_tab();
-
-			}
+			{}
 		)
 		.done(function(date)
 			{
 				$(div_draw).html(date);
-				$('.fer').css('display', 'none');
+
+				if (div_draw == ".work_zone")
+					$('.fer').css('display', 'none');
+
 				update_hadlers();
+				active_tab();
 				$('a').css('pointer-events', 'all');
 			}
 		);
@@ -351,8 +352,6 @@ let list_function = [action,
 					 show_window_eror,
 					 transition,
 					 transition];
-
-active_tab();
 
 function update_hadlers()
 {
